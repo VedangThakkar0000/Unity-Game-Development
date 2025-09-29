@@ -1,9 +1,7 @@
 using UnityEngine;
-
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
-
     [Header("Audio Sources")]
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;
@@ -12,6 +10,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip buttonClick;
     [SerializeField] private AudioClip reelSpin;
     [SerializeField] private AudioClip winSound;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -32,10 +31,22 @@ public class AudioManager : MonoBehaviour
     {
         PlaySFX(buttonClick);
     }
-
     public void PlaySpin()
     {
-        PlaySFX(reelSpin);
+        if (sfxSource != null && reelSpin != null)
+        {
+            sfxSource.clip = reelSpin;
+            sfxSource.loop = true;  
+            sfxSource.Play();
+        }
+    }
+    public void StopSpin()
+    {
+        if (sfxSource != null && sfxSource.isPlaying)
+        {
+            sfxSource.loop = false;
+            sfxSource.Stop();
+        }
     }
     public void PlayWin()
     {
